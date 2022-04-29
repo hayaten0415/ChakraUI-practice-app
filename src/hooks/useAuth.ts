@@ -4,24 +4,27 @@ import { useCallback } from 'react';
 import { User } from '../types/api/user';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useMessage } from './useMessage';
 
 
 
 export const useAuth = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+  const {showMessage} = useMessage()
 
   const login = useCallback((id: string) => {
     setLoading(true)
     axios.get<User>(`https://jsonplaceholder.typicode.com/users/${id}`).then((res) => {
       if (res.data) {
+        showMessage({title: "Login Complete", status: "success"})
         navigate("/home")
       } else {
-        alert("User not found")
+        showMessage({ title: "User Not Found", status: "error" })
       }
     })
-    .catch(() => alert("Can't Login"))
+    .catch(() => showMessage({ title: "Login Failed", status: "error" }))
     .finally(() => setLoading(false))
-  }, [navigate])
+  }, [navigate, showMessage])
   return {login, loading}
 }
