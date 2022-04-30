@@ -17,7 +17,7 @@ export const Router: FC = memo(() => {
           element={<HeaderLayout>{route.element}</HeaderLayout>}
         />
       ))}
-      <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
     </Routes>
   );
 })
